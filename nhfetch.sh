@@ -180,7 +180,7 @@ function printScreen() {
     printItem "流量信息" "$(bytesToHuman $txIfce) ↑ $(bytesToHuman $rxIfce) ↓"
     printItem "系统负载" "${loadInfo}"
     printItem "虚拟负载" "${cpuSteal}, ${cpuIdle}"
-    printItem "系统DNS" "${dns}"
+    printItem "系统 DNS" "${dns}"
     echo
     
     if [ "$enableNetworkIfce" == "yes" ]; then
