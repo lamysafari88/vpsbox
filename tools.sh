@@ -1,13 +1,60 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
 Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
+copyright(){
+    clear
+echo "\
+############################################################
 
+Linux网络优化脚本 (生产环境慎用)
+
+上次更新: 2022-5-11
+
+参数提供: @fansr
+
+当前版本参数自动禁用IPV6，如有需求自行开启
+
+############################################################
+"
+}
 tcp_tune(){ # 优化TCP窗口
-sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
+sed -i '/fs.file-max/d' /etc/sysctl.conf
+sed -i '/vm.swappiness/d' /etc/sysctl.conf
+sed -i '/fs.inotify.max_user_instances/d' /etc/sysctl.conf
+sed -i '/fs.pipe-max-size/d' /etc/sysctl.conf
+sed -i '/fs.pipe-user-pages-hard/d' /etc/sysctl.conf
+sed -i '/fs.pipe-user-pages-soft/d' /etc/sysctl.conf
+sed -i '/net.ipv4.conf.all.rp_filter/d' /etc/sysctl.conf
+sed -i '/net.ipv4.conf.default.rp_filter/d' /etc/sysctl.conf
+sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.conf
+sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.conf
+sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_probes' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_intvl/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.conf
+sed -i '/net.ipv4.route.gc_timeout/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_syn_retries/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_synack_retries/d' /etc/sysctl.conf
+sed -i '/net.core.wmem_default/d' /etc/sysctl.conf
+sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+sed -i '/net.core.somaxconn/d' /etc/sysctl.conf
+sed -i '/net.core.optmem_max/d' /etc/sysctl.conf
+sed -i '/net.core.rmem_default/d' /etc/sysctl.conf
+sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
+sed -i '/net.ipv4.conf.all.route_localnet/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.conf
@@ -16,36 +63,89 @@ sed -i '/net.ipv4.tcp_rfc1337/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_sack/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_fack/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_window_scaling/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_adv_win_scale/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_moderate_rcvbuf/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_mem/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
-sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
-sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-cat >> /etc/sysctl.conf << EOF
+sed -i '/net.netfilter.nf_conntrack_tcp_timeout_fin_wait/d' /etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_tcp_timeout_time_wait/d' /etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_tcp_timeout_close_wait/d' /etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_tcp_timeout_established/d' /etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_buckets/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+echo "# nofile
+vm.swappiness = 10
+fs.file-max = 1000000
+fs.inotify.max_user_instances = 8192
+fs.pipe-max-size = 1048576
+fs.pipe-user-pages-hard = 0
+fs.pipe-user-pages-soft = 0
+# rp filter
+net.ipv4.conf.all.rp_filter = 0
+net.ipv4.conf.default.rp_filter = 0
+# disable ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+# socket status
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_tw_timeout = 10
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_probes = 3
+net.ipv4.tcp_keepalive_intvl = 15
+net.ipv4.ip_local_port_range = 1024 65535
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_max_tw_buckets = 3000
+net.ipv4.route.gc_timeout = 100
+net.ipv4.tcp_syn_retries = 2
+net.ipv4.tcp_synack_retries = 2
+# tcp window
+net.core.wmem_default = 262144
+net.core.wmem_max = 67108864
+net.core.somaxconn = 3276800
+net.core.optmem_max = 81920
+net.core.rmem_default = 262144
+net.core.rmem_max = 67108864
+net.core.netdev_max_backlog = 400000
+net.core.netdev_budget = 600
+net.ipv4.tcp_max_orphans = 3276800
+# forward ipv4
+net.ipv4.conf.all.route_localnet=1
 net.ipv4.tcp_no_metrics_save=1
 net.ipv4.tcp_ecn=0
 net.ipv4.tcp_frto=0
 net.ipv4.tcp_mtu_probing=0
-net.ipv4.tcp_rfc1337=1
+net.ipv4.tcp_rfc1337=0
 net.ipv4.tcp_sack=1
 net.ipv4.tcp_fack=1
-net.ipv4.tcp_window_scaling=2
-net.ipv4.tcp_adv_win_scale=2
+net.ipv4.tcp_window_scaling=1
+net.ipv4.tcp_adv_win_scale=1
 net.ipv4.tcp_moderate_rcvbuf=1
-net.ipv4.tcp_rmem=4096 65536 37331520
-net.ipv4.tcp_wmem=4096 65536 37331520
-net.core.rmem_max=37331520
-net.core.wmem_max=37331520
+net.ipv4.tcp_mem = 786432 2097152 3145728 
+net.ipv4.tcp_rmem = 4096 262144 67108864
+net.ipv4.tcp_wmem = 4096 262144 67108864
 net.ipv4.udp_rmem_min=8192
 net.ipv4.udp_wmem_min=8192
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
-EOF
+# deny attack
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.inet.udp.checksum=1
+# netfiliter iptables
+net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 30
+net.netfilter.nf_conntrack_tcp_timeout_time_wait = 30
+net.netfilter.nf_conntrack_tcp_timeout_close_wait = 15
+net.netfilter.nf_conntrack_tcp_timeout_established = 350
+net.netfilter.nf_conntrack_max = 25000000
+net.netfilter.nf_conntrack_buckets = 25000000">>/etc/sysctl.conf
 sysctl -p && sysctl --system
 }
 
@@ -81,6 +181,11 @@ sysctl -p && sysctl --system
 ulimit_tune(){
 
 echo "1000000" > /proc/sys/fs/file-max
+sed -i '/fs.file-max/d' /etc/sysctl.conf
+cat >> '/etc/sysctl.conf' << EOF
+fs.file-max=1000000
+EOF
+
 ulimit -SHn 1000000 && ulimit -c unlimited
 echo "root     soft   nofile    1000000
 root     hard   nofile    1000000
@@ -140,13 +245,13 @@ if uname -r|grep -q "^5."
 then
     echo "已经是 5.x 内核，不需要更新"
 else
-    wget -O tcp.sh "https://git.io/coolspeeda" && chmod +x tcp.sh && ./tcp.sh
+    wget -N "https://foom.cc/PF/sh/bbr/bbr.sh" -O bbr.sh && bash bbr.sh
 fi
   
 }
 
 Update_Shell(){
-  wget -N "http://sh.nekoneko.cloud/tools.sh" -O tools.sh && chmod +x tools.sh && ./tools.sh
+  wget -N "https://foom.cc/PF/sh/bbr/tools.sh" -O tools.sh && chmod +x tools.sh && ./tools.sh
 }
 
 get_opsy() {
@@ -231,6 +336,7 @@ get_system_info() {
 
 menu() {
   echo -e "\
+${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ${Green_font_prefix}1.${Font_color_suffix} 安装BBR原版内核(已经是5.x的不需要)
 ${Green_font_prefix}2.${Font_color_suffix} TCP窗口调优
 ${Green_font_prefix}3.${Font_color_suffix} 开启内核转发
