@@ -3,7 +3,7 @@
  # @Author: Steven
  # @Date: 2022-09-21 09:54:02
  # @LastEditors: Steven
- # @LastEditTime: 2022-09-22 16:59:03
+ # @LastEditTime: 2022-09-22 17:34:21
  # @FilePath: \vpsbox\node_exporter.sh
  # @Description: 
  # 
@@ -28,13 +28,13 @@ wgetfile(){
 		echo -e "${Info} Downloading File"
 		wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz >/dev/null 2>&1
 		tar xvf node_exporter-1.3.1.linux-amd64.tar.gz >/dev/null 2>&1
-		mv node_exporter-1.3.1.linux-amd64 /usr/local/bin/node_exporte
+		mv node_exporter-1.3.1.linux-amd64 /usr/local/bin/node_exporter
 		echo -e "${Info} Download Completed"
 	elif [[ "${arc}" == "Arm64" ]]; then
 		echo -e "${Info} Downloading File"
 		wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-arm64.tar.gz >/dev/null 2>&1
 		tar xvf node_exporter-1.3.1.linux-arm64.tar.gz >/dev/null 2>&1
-		mv node_exporter-1.3.1.linux-arm64 /usr/local/bin/node_exporte
+		mv node_exporter-1.3.1.linux-arm64 /usr/local/bin/node_exporter
 		echo -e "${Info} Download Completed"
 	else
 		echo -e "${Info} System Arc Detect Failed"
