@@ -3,7 +3,7 @@
  # @Author: Steven
  # @Date: 2022-09-21 09:54:02
  # @LastEditors: Steven
- # @LastEditTime: 2022-09-21 10:56:26
+ # @LastEditTime: 2022-09-22 16:59:03
  # @FilePath: \vpsbox\node_exporter.sh
  # @Description: 
  # 
@@ -66,7 +66,7 @@ EOF
 systemctl daemon-reload
 systemctl enable --now node_exporter.service
 systemctl restart node_exporter.service
-echo | systemctl status node_exporter
+systemctl status node_exporter
 }
 
 main(){
