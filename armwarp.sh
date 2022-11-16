@@ -17,9 +17,9 @@ function Check_System_Depandencies {
 }
 
 function Download_Profile {
-    wget -qO /etc/dnsmasq.d/warp.conf https://raw.githubusercontent.com/lamysafari88/vpsbox/dnsmasq/warp.conf
-    wget -qO /etc/wireguard/up https://raw.githubusercontent.com/lamysafari88/vpsbox/scripts/up
-    wget -qO /etc/wireguard/down https://raw.githubusercontent.com/lamysafari88/vpsbox/scripts/down
+    wget -qO /etc/dnsmasq.d/warp.conf https://raw.githubusercontent.com/lamysafari88/vpsbox/main/dnsmasq/warp.conf
+    wget -qO /etc/wireguard/up https://raw.githubusercontent.com/lamysafari88/vpsbox/main/scripts/up
+    wget -qO /etc/wireguard/down https://raw.githubusercontent.com/lamysafari88/vpsbox/main/scripts/down
     chmod +x /etc/wireguard/up
     chmod +x /etc/wireguard/down
 }
